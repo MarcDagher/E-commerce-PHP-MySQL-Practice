@@ -25,12 +25,11 @@ if(!$token){
 try {
   $key = "secret key";
   $decoded = JWT::decode($token, new Key($key, 'HS256'));
-  print_r($decoded);
+  
+  $name = isset($_POST['name']) && !empty($_POST['name']) ? $_POST['name'] : null;
+  $user_id = isset($_POST['user_id']) && !empty($_POST['user_id']) ? $_POST['user_id'] : null;
 
-  if ($decoded -> role_id == 2){
-    $name = isset($_POST['name']) && !empty($_POST['name']) ? $_POST['name'] : null;
-    $user_id = isset($_POST['user_id']) && !empty($_POST['user_id']) ? $_POST['user_id'] : null;
-    // user id is the id we get from the token
+  if ($decoded -> role_id == 2 && $decoded -> user_id == $user_id){
     
     $query = $mysqli -> prepare("select product_name from products where product_name = ? and user_id = ?");
     $query -> bind_param('si', $name, $user_id);

@@ -26,7 +26,6 @@ if(!$token){
 try {
   $key = "secret key";
   $decoded = JWT::decode($token, new Key($key, 'HS256'));
-  print_r($decoded);
 
   if ($decoded -> role_id == 2){
 
@@ -45,10 +44,8 @@ try {
     
     if ($rows == 0){
       $query = $mysqli -> prepare("insert into products(product_name, price, stock, user_id) values(?,?,?,?)");
-      $query -> bind_param("siii", $name, $price, $stock, $decoded -> id);
-      // echo "im here \n";
-      // print_r($decoded);
-      // echo $decoded -> user_id;
+      $query -> bind_param("siii", $name, $price, $stock, $decoded -> user_id);
+
       $query -> bind_param("siii", $name, $price, $stock, $decoded -> user_id);
       $query -> execute();
       $query -> close();
@@ -57,7 +54,7 @@ try {
       $response['status'] = $name . " added successully";
       echo json_encode($response);
     } elseif ($rows > 0){
-      echo "already found";
+      echo "Product already found";
     }
   }
   else {
