@@ -2,12 +2,19 @@
 include "./connection.php";
 
 $username = $_POST['username'];
-$email = $_POST['user_email'];
+$email = $_POST['email'];
 $password = $_POST['password'];
-$user_type = $_POST['user_type'];
+$user_role = $_POST['user_role'];
 
-$query_names = $mysqli -> prepare("select username from users where username =? and user_type=?");
-$query_names -> bind_param('ss', $username, $user_type);
+if ($user_role == "customer"){
+  $id = 1;
+} elseif ($user_role == "seller"){
+  $id = 2;
+}
+
+
+$query_names = $mysqli -> prepare("select username from users where username =?");
+$query_names -> bind_param('s', $username);
 $query_names -> execute();
 $result = $query_names -> get_result();
 $rows = $result -> num_rows;
@@ -18,8 +25,8 @@ if ($rows > 0){
 }
 else{
   $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-  $query_add_user = $mysqli -> prepare("insert into users(username, user_email, password, user_type) values(?,?,?,?)");
-  $query_add_user -> bind_param('ssss', $username, $email, $hashed_password, $user_type);
+  $query_add_user = $mysqli -> prepare("insert into users(username, email, password, role_id) values(?,?,?,?)");
+  $query_add_user -> bind_param('ssss', $username, $email, $hashed_password, $id);
   $query_add_user -> execute();
   $query_add_user -> close();
   $response = [];
