@@ -1,5 +1,5 @@
 <?php 
-include "./connection.php";
+include "../connection.php";
 
 $name = isset($_POST['name']) && !empty($_POST['name']) ? $_POST['name'] : null;
 $price = isset($_POST['price']) && !empty($_POST['price']) ? $_POST['price'] : null;

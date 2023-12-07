@@ -1,6 +1,6 @@
 <?php
 
-include "./connection.php";
+include "../connection.php";
 
 $name = isset($_POST['name']) && !empty($_POST['name']) ? $_POST['name'] : null;
 $user_id = isset($_POST['user_id']) && !empty($_POST['user_id']) ? $_POST['user_id'] : null;
